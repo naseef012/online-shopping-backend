@@ -2,13 +2,15 @@ package com.naseef.shoppingbackend.daoimpl;
 
 import com.naseef.shoppingbackend.dao.CategoryDAO;
 import com.naseef.shoppingbackend.dto.Category;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by USER on 9/26/2017.
+ * Created by Naseef M Abdus Sattar on 9/26/2017.
  */
+@Repository("categoryDAO")
 public class CategoryDAOimpl implements CategoryDAO
 {
     private static List<Category> categories = new ArrayList<Category>();
@@ -36,7 +38,7 @@ public class CategoryDAOimpl implements CategoryDAO
 
         //Adding 3rd Category
         Category category3 = new Category();
-        category3.setId(2);
+        category3.setId(3);
         category3.setName("Laptop");
         category3.setDescription("Description Laptop");
         category3.setImageURL("CAT_3.png");
@@ -48,5 +50,15 @@ public class CategoryDAOimpl implements CategoryDAO
     public List<Category> list()
     {
         return categories;
+    }
+
+    public Category get(int id)
+    {
+        for (Category c: categories)
+        {
+            if (c.getId()== id)
+                return c;
+        }
+        return null;
     }
 }
