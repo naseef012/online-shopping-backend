@@ -2,63 +2,80 @@ package com.naseef.shoppingbackend.daoimpl;
 
 import com.naseef.shoppingbackend.dao.CategoryDAO;
 import com.naseef.shoppingbackend.dto.Category;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 /**
  * Created by Naseef M Abdus Sattar on 9/26/2017.
  */
 @Repository("categoryDAO")
+@Transactional
 public class CategoryDAOimpl implements CategoryDAO
 {
-    private static List<Category> categories = new ArrayList<Category>();
-
-    //This Static block is used to initialize the List<Category> with some values.
-    static
-    {
-        //Adding first Category
-        Category category1 = new Category();
-        category1.setId(1);
-        category1.setName("TV");
-        category1.setDescription("Description TV");
-        category1.setImageURL("CAT_1.png");
-
-        categories.add(category1);
-
-        //Adding 2nd Category
-        Category category2 = new Category();
-        category2.setId(2);
-        category2.setName("Mobile");
-        category2.setDescription("Description Mobile");
-        category2.setImageURL("CAT_2.png");
-
-        categories.add(category2);
-
-        //Adding 3rd Category
-        Category category3 = new Category();
-        category3.setId(3);
-        category3.setName("Laptop");
-        category3.setDescription("Description Laptop");
-        category3.setImageURL("CAT_3.png");
-
-        categories.add(category3);
-
-    }
+    @Autowired
+    private SessionFactory sessionFactory;
 
     public List<Category> list()
     {
-        return categories;
+       String selectActiveCategory = "FROM Category WHERE active = :active";
+       Query query = sessionFactory.getCurrentSession().createQuery(selectActiveCategory);
+       query.setParameter("active", true);
+       return query.getResultList();
     }
 
+    /*
+    Getting single category based on Id
+     */
     public Category get(int id)
     {
-        for (Category c: categories)
-        {
-            if (c.getId()== id)
-                return c;
+        Session currentSession = sessionFactory.getCurrentSession();
+        Category category = currentSession.get(Category.class, Integer.valueOf(id));
+        return category;
+    }
+
+
+    public boolean add(Category category)
+    {
+        try{
+            //add the category to the database table
+            sessionFactory.getCurrentSession().persist(category);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
         }
-        return null;
+    }
+
+    public boolean update(Category category)
+    {
+        try{
+            //update the category to the database table
+            sessionFactory.getCurrentSession().update(category);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean delete(Category category)
+    {
+        category.setActive(false);
+
+        try{
+            //update the category after setting Active to false to the database table
+            sessionFactory.getCurrentSession().update(category);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 }
