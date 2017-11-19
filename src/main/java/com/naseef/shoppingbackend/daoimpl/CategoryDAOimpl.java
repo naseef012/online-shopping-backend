@@ -22,7 +22,7 @@ public class CategoryDAOimpl implements CategoryDAO
     @Autowired
     private SessionFactory sessionFactory;
 
-    public List<Category> list()
+    public List<Category> getList()
     {
        String selectActiveCategory = "FROM Category WHERE active = :active";
        Query query = sessionFactory.getCurrentSession().createQuery(selectActiveCategory);

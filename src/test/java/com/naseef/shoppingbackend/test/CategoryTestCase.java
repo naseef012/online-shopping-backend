@@ -63,6 +63,6 @@ public class CategoryTestCase
        assertEquals("Successfully deleted the record from the table ",true,categoryDAO.delete(category));
 
        //List of category
-       assertEquals("Successfully Fetched the list category",1,categoryDAO.list().size());
+       assertEquals("Successfully Fetched the list category",1,categoryDAO.getList().size());
    }
 }
