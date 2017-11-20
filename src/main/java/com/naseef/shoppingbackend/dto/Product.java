@@ -1,8 +1,10 @@
 package com.naseef.shoppingbackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.util.UUID;
 
 /**
@@ -16,13 +18,19 @@ public class Product
     private int id;
 
     private String code;
+
+    @NotBlank (message = "Please Enter Product Name")
     private String name;
+
+    @NotBlank (message = "Please Enter Brand Name of the Product")
     private String brand;
 
     @JsonIgnore
+    @NotBlank (message = "Please Enter Product Description")
     private String description;
 
     @Column(name = "unit_price")
+    @Min(value = 1 , message = "The Price can not be less than 1")
     private double unitPrice;
     private int quantity;
 
