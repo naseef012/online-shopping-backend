@@ -2,6 +2,7 @@ package com.naseef.shoppingbackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -48,6 +49,19 @@ public class Product
 
     private int purchases;
     private int views;
+
+    @Transient
+    private MultipartFile file;
+
+    public MultipartFile getFile()
+    {
+        return file;
+    }
+
+    public void setFile(MultipartFile file)
+    {
+        this.file = file;
+    }
 
     //default constructor
     public Product()
